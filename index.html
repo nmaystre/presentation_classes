@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Графика в вебе: как рисовать и как анимировать</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="shower/themes/ribbon/styles/styles.css" />
+  <style>
+    .shower {
+      --slide-ratio: calc(16 / 9);
+    }
+
+    .centered {
+      text-align: center;
+    }
+
+    .cover_full {
+      width: 100%;
+      height: 100%;
+    }
+
+    figure img {
+      display: block;
+      margin: auto;
+    }
+
+    figcaption {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-weight: 700;
+      line-height: normal;
+    }
+
+  </style>
+</head>
+
+<body class="shower list">
+  <header class="caption">
+    <h1>Графика в вебе: как рисовать и как анимировать</h1>
+    <p>Наталья Майстренко</p>
+  </header>
+
+  <section class="slide" id="cover">
+    <header>
+      <h2>Графика в вебе:<br>как рисовать и как анимировать</h2>
+      <p>Наталья Майстренко, МТС ИТ</p>
+    </header>
+
+    <div class="copyright right ">
+      <a href="https://www.freepik.com/free-vector/memphis-pattern_1177561.htm/">© vvstudio</a>
+    </div>
+    <style>
+      #cover {
+        background-image: url("./pictures/pattern.jpg");
+        background-repeat: repeat;
+        background-position: center;
+        background-size: cover;
+      }
+
+      #cover h2 {
+        margin: 0;
+        text-align: center;
+        font-size: 70px;
+      }
+
+      #cover p {
+        margin: 10px 0 0;
+        text-align: center;
+        font-style: italic;
+        font-size: 20px;
+      }
+
+      #cover header {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: #fff;
+        padding: 40px 0;
+      }
+
+    </style>
+  </section>
+
+  <section class="slide">
+    <h2>План доклада</h2>
+    <ul>
+      <li>Разница между SVG и CSS изображениями</li>
+      <li>Анимация векторной графики</li>
+      <li>Использование Canvas</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>Как бы выглядел сайт без картинок?</h2>
+    <figure>
+      <img src="pictures/wiki.png" alt="wikipedia" style="width: 100%; height: auto;" />
+    </figure>
+  </section>
+
+  <section class="slide">
+    <h2>Графика делится на:</h2>
+    <div class="columns two">
+      <figure>
+        <img src="pictures/css3.svg" alt="css3 svg pic" width="300" height="300" />
+        <figcaption>
+          <b>векторную</b>
+          <small>Популярные форматы: SVG, AI.</small>
+        </figcaption>
+      </figure>
+      <figure>
+        <img src="pictures/css3.png" alt="css3 svg pic" width="300" height="300" />
+        <figcaption>
+          <b>растровую</b>
+          <small>Популярные форматы: JPEG, PNG.</small>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="slide">
+    <h2>Пример изображения на CSS</h2>
+    <div class="columns two">
+      <div>
+        <pre>
+            <code>div.container</code>
+            <code>&nbsp;&nbsp;div.laptop</code>
+            <code>&nbsp;&nbsp;&nbsp;&nbsp;div.screen</code>
+            <code>&nbsp;&nbsp;&nbsp;&nbsp;div.base</code>
+            <code>&nbsp;&nbsp;div.cup</code>
+        </pre>
+      </div>
+      <div>
+        <div class="container">
+          <div class="laptop">
+            <div class="screen"></div>
+            <div class="base"></div>
+          </div>
+          <div class="cup"></div>
+          <div class="steam">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+        <style>
+          body {
+            background: #dedede;
+          }
+
+          body .container {
+            position: relative;
+            height: 240px;
+            width: 500px;
+            margin: auto;
+            margin-top: 100px;
+          }
+
+          body .container::after {
+            content: "";
+            position: absolute;
+            top: 216px;
+            left: 10px;
+            width: 480px;
+            border: 3px solid rgba(0, 0, 0, 0.2);
+            border-radius: 0px 0px 50% 50%;
+          }
+
+          body .container::before {
+            content: "";
+            position: absolute;
+            top: 218px;
+            left: 25px;
+            height: 5px;
+            width: 450px;
+            background: #c8dbfe;
+            border-radius: 50%;
+          }
+
+          body .container .laptop {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            z-index: 100;
+          }
+
+          body .container .laptop .screen {
+            position: absolute;
+            left: 115px;
+            top: 0px;
+            height: 200px;
+            width: 300px;
+            background: #fafafa;
+            border-radius: 12px 12px 0px 0px;
+            border: 3px solid #666;
+            box-sizing: border-box;
+          }
+
+          body .container .laptop .screen::after,
+          body .container .laptop .screen::before {
+            content: "";
+            position: absolute;
+          }
+
+          body .container .laptop .screen::after {
+            top: 20px;
+            left: 8px;
+            height: 162px;
+            width: 278px;
+            background: #555;
+            border: 3px solid #666;
+            box-sizing: border-box;
+          }
+
+          body .container .laptop .screen::before {
+            top: 5px;
+            left: calc(50% - 4px);
+            height: 8px;
+            width: 8px;
+            background: #777;
+            border-radius: 50%;
+          }
+
+          body .container .laptop .base {
+            position: absolute;
+            top: 198px;
+            left: 85px;
+            height: 18px;
+            width: 360px;
+            background: #fafafa;
+            border-radius: 0px 0px 15px 15px;
+            border: 3px solid #666;
+            box-sizing: border-box;
+          }
+
+          body .container .laptop .base::after {
+            content: "";
+            position: absolute;
+            left: 135px;
+            height: 4px;
+            width: 90px;
+            background: #fff;
+            border-radius: 0px 0px 8px 8px;
+            background: #ddd;
+            border: 2px solid #666;
+            box-sizing: border-box;
+            border-top: none;
+          }
+
+          body .container .cup {
+            position: absolute;
+            top: 136px;
+            left: 30px;
+            height: 80px;
+            width: 75px;
+            background: #d81159;
+            border-radius: 0px 0px 10px 10px;
+            border: 3px solid #666;
+            box-sizing: border-box;
+          }
+
+          body .container .cup::after,
+          body .container .cup::before {
+            content: "";
+            position: absolute;
+          }
+
+          body .container .cup::after {
+            left: -30px;
+            top: 4px;
+            height: 55px;
+            width: 60px;
+            background: #d81159;
+            z-index: -10;
+            border-radius: 50%;
+            border: 3px solid #666;
+          }
+
+          body .container .cup::before {
+            left: -20px;
+            top: 14px;
+            height: 41px;
+            width: 40px;
+            background: #dedede;
+            border: 3px solid #666;
+            border-radius: 50%;
+            z-index: -5;
+            box-sizing: border-box;
+          }
+
+          body .steam {
+            position: absolute;
+            top: 130px;
+            left: 45px;
+            width: 45px;
+            height: 30px;
+            display: flex;
+            justify-content: space-around;
+            z-index: -1;
+            opacity: 0;
+            -webkit-animation: steam 3s linear infinite;
+            animation: steam 3s linear infinite;
+          }
+
+          body .steam div {
+            height: 30px;
+            width: 10px;
+            background: #fff;
+            border-radius: 10px 0px 10px 0px;
+          }
+
+          @-webkit-keyframes steam {
+            20% {
+              opacity: 0.6;
+            }
+
+            35% {
+              top: 100px;
+              opacity: 0.6;
+            }
+
+            70% {
+              top: 70px;
+              opacity: 0;
+            }
+          }
+
+          @keyframes steam {
+            20% {
+              opacity: 0.6;
+            }
+
+            35% {
+              top: 100px;
+              opacity: 0.6;
+            }
+
+            70% {
+              top: 70px;
+              opacity: 0;
+            }
+          }
+
+        </style>
+      </div>
+    </div>
+    <figcaption class="copyright right black">
+      <a href="https://codepen.io/animeshk874/pen/vxKxjj" target="_blank">Laptop by Animesh Kumar</a>
+    </figcaption>
+  </section>
+
+  <section class="slide" style="padding: 0;">
+    <div class="cover cover_full">
+      <figure>
+        <img class="cover" src="pictures/demo_canvas_moon.jpg" alt="Enjoying the view by Natalia" />
+        <figcaption class="copyright right white">
+          <a href="https://codepen.io/nwszewczyk/pen/mYPQqw" target="_blank">
+            Enjoying the view by Natalia</a>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="slide">
+    <h2>И это тоже CSS</h2>
+    <div class="columns two">
+      <div>
+        <img src="./pictures/francine_code.jpg" alt="Francine by Diana Smith" class="halfwidth" />
+      </div>
+      <div>
+        <img src="./pictures/francine_pic.jpg" alt="Francine by Diana Smith" class="halfwidth" />
+      </div>
+      <style>
+        .halfwidth {
+          width: 250px;
+        }
+
+      </style>
+    </div>
+    <figcaption class="copyright right black">
+      <a href="http://diana-adrianne.com/purecss-francine/" target="_blank">
+        Francine by Diana Smith
+      </a>
+    </figcaption>
+  </section>
+
+  <section class="slide">
+    <h2>Правда бывают сложности</h2>
+    <div class="columns two">
+      <div>
+        <img src="./pictures/francine_safari.jpg" alt="Francine by Diana Smith" class="halfwidth" />
+      </div>
+      <div>
+        <img src="./pictures/francine_oldchrome.jpg" alt="Francine by Diana Smith" class="halfwidth" />
+      </div>
+      <style>
+        .halfwidth {
+          width: 250px;
+        }
+
+      </style>
+    </div>
+  </section>
+
+  <section class="slide" style="padding: 0;">
+    <div style="width:100%; height:100%;  position: relative;">
+      <figure>
+        <img class="cover" src="./pictures/demo_canvas_svg.jpg" alt="SVG image animated by Elizabet Oliveira" />
+        <figcaption class="copyright right white">
+          <a href="https://codepen.io/miukimiu/full/Igouf" target="_blank">SVG image animated by Elizabet Oliveira</a>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="slide">
+    <h2>Как создаются SVG</h2>
+    <div class="columns two">
+      <div>
+        <pre>
+            <code>&lt;svg width="400" height="180"&gt;</code>
+            <code>&nbsp;&nbsp;&lt;rect x="50" y="20"</code>
+            <code>&nbsp;&nbsp;width="150" height="150"</code>
+            <code>&nbsp;&nbsp;fill="blue" stroke="pink"</code>
+            <code>&nbsp;&nbsp;stroke-width="15"/&gt;</code>
+            <code>&lt;/svg &gt;</code>
+        </pre>
+      </div>
+      <div>
+        <svg width="400" height="180">
+          <rect x="50" y="20" width="150" height="150" style="fill:blue;stroke:pink;stroke-width:15;opacity:0.5" />
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <h2>Некоторые базовые фигуры SVG</h2>
+    <table>
+      <tr>
+        <th scope="col"><b>&lt;tag&gt;</b></th>
+        <th>Рисует</th>
+        <th>Можно задавать</th>
+      </tr>
+
+      <tr>
+        <td scope="row"><b>&lt;rect&gt;</b></td>
+        <td>прямоугольник</td>
+        <td>положение, ширину и высоту, радиус углов.</td>
+      </tr>
+      <tr>
+        <td scope="row"><b>&lt;circle&gt;</b></td>
+        <td>окружность</td>
+        <td>радиус, положение центра.</td>
+      </tr>
+      <tr>
+        <td scope="row"><b>&lt;line&gt;</b></td>
+        <td>прямая линия</td>
+        <td>положения точек 1 и 2</td>
+      </tr>
+      <tr>
+        <td scope="row"><b>&lt;polyline&gt;</b></td>
+        <td>ломаная линия</td>
+        <td>координаты каждой точки</td>
+      </tr>
+      <tr>
+        <td scope="row"><b>&lt;polygon&gt;</b></td>
+        <td>многоугольник</td>
+        <td>координаты списка точек</td>
+      </tr>
+    </table>
+
+    <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Basic_Shapes">MDN web documentation</a>
+  </section>
+
+  <section class="slide">
+    <h2>Итого</h2>
+    <ul>
+      <li>CSS images полезны для самых простых изображений</li>
+      <li>
+        Для сложных картинок лучше использовать SVG
+      </li>
+      <li>
+        <span>В начале пути достаточно:</span>
+        <ul>
+          <li>уметь сделать базовые иконки меню на CSS</li>
+          <li>знать основы SVG: заменить заливку или обводку</li>
+          <li>уметь пользоваться графическими редакторами чтобы экспортировать графику</li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>Анимация векторной графики</h2>
+    <p>
+      Анимация позволяет элементу постепенно переходить от одного состояния
+      к другому.
+    </p>
+    <ol>
+      <li>CSS animations</li>
+      <li>JS animations</li>
+      <li>Multimedia Integration Language (SMIL) animations</li>
+      <li>Web animations API*</li>
+    </ol>
+  </section>
+
+  <section class="slide">
+    <h2>CSS animations</h2>
+    <ul>
+      <li>Необходимо в начале указать ключевые кадры (@keyframes)</li>
+      <li>
+        @keyframes содержат стили, которые будут применены к элементу на
+        каждом из шагов.
+      </li>
+      <li>Вы можете изменить CSS свойства столько раз, сколько захотите.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>CSS animations</h2>
+    <div class="columns two">
+      <div>
+        <pre>
+            <code>&lt;div class="wrap-ball"&gt;</code>
+            <code>&nbsp;&nbsp;&lt;div class="ball"&gt;&lt;/div&gt;</code>
+            <code>&lt;/div&gt;</code>
+        </pre>
+        <a href="https://codepen.io/hi_camomile/pen/VObGZq">See demo</a>
+      </div>
+      <article>
+        <div class="bg" id="demo">
+          <div class="ball_wrp">
+            <div class="ball"></div>
+          </div>
+        </div>
+        <style>
+          #demo {
+            position: relative;
+            min-height: 30vh;
+            margin: 0;
+            padding: 0;
+            outline: none;
+            list-style: none;
+            text-decoration: none;
+            box-sizing: border-box;
+            background: transparent;
+            border: none;
+          }
+
+          #demo .ball_wrp {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            height: 200px;
+            width: 200px;
+          }
+
+          #demo .ball {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: 50px;
+            height: 50px;
+            background-color: #202020;
+            border-radius: 100%;
+            animation: ball 1s infinite;
+          }
+
+          @keyframes ball {
+            0% {
+              top: 6px;
+            }
+
+            5% {
+              top: 8px;
+            }
+
+            10% {
+              top: 12px;
+            }
+
+            15% {
+              top: 20px;
+            }
+
+            20% {
+              top: 38px;
+            }
+
+            25% {
+              top: 72px;
+            }
+
+            30% {
+              top: 100px;
+            }
+
+            35% {
+              top: 152px;
+            }
+
+            40% {
+              top: 154px;
+              height: 46px;
+              width: 54px;
+            }
+
+            50% {
+              top: 176px;
+              height: 24px;
+              width: 72px;
+            }
+
+            55% {
+              top: 162px;
+              height: 38px;
+              width: 58px;
+            }
+
+            60% {
+              top: 138px;
+              height: 48px;
+              width: 52px;
+            }
+
+            65% {
+              top: 110px;
+              height: 50px;
+              width: 50px;
+            }
+
+            70% {
+              top: 72px;
+            }
+
+            75% {
+              top: 38px;
+            }
+
+            80% {
+              top: 20px;
+            }
+
+            85% {
+              top: 12px;
+            }
+
+            90% {
+              top: 8px;
+            }
+
+            95% {
+              top: 5px;
+            }
+
+            100% {
+              top: 5px;
+            }
+          }
+
+        </style>
+      </article>
+    </div>
+  </section>
+
+  <section class="slide slide--l">
+    <style>
+      .slide--l th:first-child,
+      .slide--l td:first-child {
+        padding-left: 36px;
+        padding-right: 36px;
+        white-space: nowrap;
+      }
+
+      .slide--l th:last-child,
+      .slide--l td:last-child {
+        padding-right: 36px;
+      }
+
+    </style>
+    <h2>CSS animations</h2>
+    <table>
+      <tr>
+        <td scope="row"><b>animation-name</b></td>
+        <td>название анимации</td>
+      </tr>
+      <tr>
+        <td scope="row"><b>animation-duration</b></td>
+        <td>продолжительность анимации</td>
+      </tr>
+      <tr>
+        <td scope="row"><b>animation-delay</b></td>
+        <td>задержка начала анимации</td>
+      </tr>
+      <tr>
+        <td scope="row"><b>animation-iteration-count</b></td>
+        <td>количество итераций, которое анимация отрабатывает</td>
+      </tr>
+    </table>
+  </section>
+
+  <section class="slide slide--l">
+    <h2>CSS animations</h2>
+    <table>
+      <tr>
+        <td scope="row"><b>animation-direction</b></td>
+        <td>
+          направление анимации
+        </td>
+      </tr>
+      <tr>
+        <td scope="row"><b>animation-timing-function</b></td>
+        <td>
+          скорость анимации: линейная, <br>в кубической функции Безье
+          (см <a href="https://easings.net/ru" target="_blank">easings.net</a>)
+        </td>
+      </tr>
+      <tr>
+        <td scope="row"><b>animation-fill-mode</b></td>
+        <td>стили элемента вне анимации</td>
+      </tr>
+      <tr>
+        <td scope="row"><b>animation-play-state</b></td>
+        <td>позволяет приостановить анимацию</td>
+      </tr>
+    </table>
+  </section>
+
+  <section class="slide">
+    <h2>CSS animations</h2>
+    <img src="./pictures/caniuse_cssanim.png" alt="caniuse" style="width: 100%;" />
+  </section>
+
+  <section class="slide">
+    <h2>JS animations</h2>
+    <ul>
+      <li>JavaScript-анимация применяется там, где не подходит CSS.</li>
+      <li>Можно создавать движение по сложной траектории</li>
+      <li>С JS можно добавлять и удалять элементы</li>
+      <li>Создавать сложнее, чем CSS</li>
+      <li>Может перегрузить браузер</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>Synchronized Multimedia Integration Language (SMIL) animations</h2>
+    <ul>
+      <li>
+        Вставляется напрямую в SVG
+      </li>
+      <li>
+        <code>&lt;animate&gt;</code> меняет скалярные величины
+      </li>
+      <li>
+        <code>&lt;set&gt;</code> изменяет атрибуты преобразования
+      </li>
+      <li>
+        <code>&lt;animateMotion&gt;</code> позволяет следовать траектории движения
+      </li>
+      <li>
+        <code>&lt;animateColor&gt;</code> меняет цветовые атрибуты
+      </li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>SMIL animations</h2>
+    <div class="columns two">
+      <div>
+        <pre>
+          <code>&lt;svg width="100" height="300"&gt;</code>
+          <code>&nbsp;&nbsp;&lt;circle id="circle" ..."&gt;</code>
+          <code>&nbsp;&nbsp;&lt;animate ...</code>
+          <code>&nbsp;&nbsp;attributeName="cy"</code>
+          <code>&nbsp;&nbsp;values="250; 50; 250; 150; 250"</code>
+          <code>&nbsp;&nbsp;keyTimes="0; 0.2; 0.4; 0.6; 1"</code>
+          <code>&nbsp;&nbsp;dur="1.5s" begin="click"/></code>
+          <code>&lt;/svg&gt;</code>
+        </pre>
+      </div>
+
+      <svg width="100" height="300">
+        <circle id="circle" r="30" cx="50" cy="250" fill="#111111" />
+        <animate xlink:href="#circle" attributeName="cy" from="250" to="250" dur="1s" begin="click"
+          values="250; 50; 250; 150; 250" keyTimes="0; 0.2; 0.4; 0.6; 1" fill="freeze" />
+      </svg>
+    </div>
+  </section>
+
+  <section class="slide">
+    <h2>SMIL animations</h2>
+    <img src="./pictures/caniuse_smil.png" alt="caniuse" style="width: 100%;" />
+  </section>
+
+  <section class="slide">
+    <h2>Web animations API</h2>
+    <ul>
+      <li>Позволяет нам вынести CSS animations и CSS transitions в JS</li>
+      <li>Широкий спектр возможных манипуляций</li>
+      <li>Поддержка динамически меняющихся значений</li>
+      <li>Хорошая производительность</li>
+      <li>
+        <a href="https://developer.mozilla.org/ru/docs/Web/API/Web_Animations_API/Using_the_Web_Animations_API">Курс
+          'Встречайте Web Animations API'</a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>Web animations API</h2>
+    <img src="./pictures/caniuse_webanim.png" alt="caniuse" style="width: 100%;" />
+  </section>
+
+  <section class="slide">
+    <h2>Итого</h2>
+    <ul>
+      <li>Многие необходимые в работе анимации можно сделать с помощью CSS</li>
+      <li>JS animations – помимо CSS преобразований можно еще и удалять элементы, создавать новые</li>
+      <li>SMIL чуть более функционален, но постепенно уходит из применения</li>
+      <li>Пора присмотреться к Web Animations API</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>Немного про Canvas</h2>
+    <ul>
+      <li>Грубо говоря, это 'холст', на котором можно управлять каждым пикселем</li>
+      <li>Можно вставить любую картинку или нарисовать что-то</li>
+      <li>При масшабировании качество может снизиться</li>
+      <li>Для анимации браузеру приходится перерисовывать все изображение</li>
+      <li>Изображение не добавляеся в DOM и не хранится в памяти браузера</li>
+      <!-- <li>requestAnimationFrame отрисовывает изображение с 60fps</li> -->
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>Немного про Canvas</h2>
+    <div class="columns two">
+      <div>
+        <pre>
+            <code>&lt;canvas&gt;&lt;/canvas&gt;</code>
+            <code>+200 lines in JS :)</code>
+          </pre>
+        <br>
+
+      </div>
+
+      <div>
+        <img src="./pictures/demo_canvas.png" alt="" width="400px">
+        <figcaption class="copyright right black">
+          <a href="https://codepen.io/FabioG/pen/JdmJLK" target="_blank">Canvas playing by Fabio</a>
+        </figcaption>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="picture">
+    <h2>Пример изображения на Canvas</h2>
+    <figure>
+      <img class="cover" src="pictures/8bit.png" alt="Orange typewriter on a wooden table close-up"
+        style="width: 100%;" />
+      <figcaption class="copyright right white">
+        <a href="http://www.effectgames.com/demos/canvascycle/" target="_blank">© effectgames.com</a>
+      </figcaption>
+    </figure>
+    <style>
+      #picture h2 {
+        color: white;
+      }
+
+    </style>
+  </section>
+
+  <section class="slide" id="picture" style="padding: 0;">
+    <div style="width:100%; height:100%;  position: relative;">
+      <figure>
+        <img class="cover cover_full" src="pictures/demo_canvas_pattern.jpg" alt="demo pic" />
+        <figcaption class="copyright right white">
+          <a href="https://codepen.io/enxaneta/pen/xGbZWv" target="_blank">Canvas Animation by Gabi</a>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="slide" id="picture" style="padding: 0;">
+    <div style="width:100%; height:100%;  position: relative;">
+      <figure>
+        <img class="cover cover_full" src="pictures/demo_canvas_molecules.jpg" alt="demo pic" />
+        <figcaption class="copyright right white">
+          <a href="https://codepen.io/motorlatitude/pen/sjicL" target="_blank">
+            Floating Molecules by Lennart Hase</a>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="slide">
+    <h2>Итого</h2>
+    <ul>
+      <li>На мой взгляд, Сanvas чуть сложней для изучения</li>
+      <li>Оптимален для ситуаций, где:
+        <ul>
+          <li>в изображении много деталей</li>
+          <li>не нужно масштабирование изображения</li>
+        </ul>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2 class="shout shrink">Quiz time</h2>
+  </section>
+
+  <section class="slide">
+    <h2>Демки из вопросов</h2>
+    <ul>
+      <li><a href="https://codepen.io/swapwarick/details/myydmp">Canvas Animation by Swapnil</a></li>
+      <li><a href="https://codepen.io/zadvorsky/details/nKchq">Iceberg by Szenia Zadvornykh </a></li>
+      <li><a href="https://codepen.io/jkantner/details/RmgoLK">Grumpy Cat by Jon Kantner</a></li>
+      <li><a href="https://codepen.io/ryankbrown/details/WBOeKg">Emoji Bounce by ryan_brwn</a></li>
+      <li><a href="https://codepen.io/MiroAlt/details/vXWPwK#forks">Coder by Miro Alt</a></li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>Полезные ссылки</h2>
+    <ul>
+      <li>
+        CSS Animations
+        <ul>
+          <li><a
+              href="https://developer.mozilla.org/ru/docs/Web/CSS/CSS_Animations/Ispolzovanie_CSS_animatciy">Использование
+              CSS-анимации</a></li>
+          <li><a
+              href="https://medium.com/coding-artist/5-steps-for-cleaning-up-your-code-in-pure-css-images-d0505b783ec">5
+              Steps For Cleaning Up Your Code In Pure CSS Images</a></li>
+          <li><a href="https://css-tricks.com/the-shapes-of-css/">Основные геометрические объекты на CSS</a></li>
+        </ul>
+      </li>
+      <li>
+        SMIL
+        <ul>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/SVG/SVG_animation_with_SMIL">SVG animation with
+              SMIL</a></li>
+          <li><a href="https://css-live.ru/articles/rukovodstvo-po-svg-animaciyam-smil.html">Руководство по
+              SVG-анимациям (SMIL) </a></li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>Полезные ссылки</h2>
+    <ul>
+      <li>
+        JS Animations
+        <ul>
+          <li>
+            <a href="https://developers.google.com/web/fundamentals/design-and-ux/animations/css-vs-javascript?hl=ru">
+              Сравнение анимации средствами CSS и JavaScript</a>
+          </li>
+          <li>
+            <a href="https://learn.javascript.ru/js-animation">Статья на learn.javascript.ru</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        Web Animations API
+        <ul>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API">Web Animations API</a></li>
+          <li><a href="https://css-live.ru/articles/pogovorim-ob-web-animations-api.html">Поговорим об Web Animations
+              API (серия статей)</a></li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>Спасибо! Вопросы?</h2>
+    <p>Наталья Майстренко <a href="tg://resolve?domain=natalie_m">@natalie_m</a></p>
+  </section>
+
+  <footer class="badge">
+    <a href="https://github.com/shower/shower">Fork me on GitHub</a>
+  </footer>
+
+  <div class="progress"></div>
+
+  <script src="shower/shower.min.js"></script>
+  <!-- Copyright © 3000 Yours Truly, Famous Inc. -->
+</body>
+
+</html>
